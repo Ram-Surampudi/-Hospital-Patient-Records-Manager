@@ -1,0 +1,71 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql" 
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  PATIENT
+  DOCTOR
+  SUPERADMIN
+}
+
+enum Gender {
+  MALE 
+  FEMALE
+  OTHERS
+}
+
+enum PatientStatus {
+  Admitted
+  Discharged
+}
+
+enum BloodGroup {
+  A_POSITIVE
+  A_NEGITIVE
+  B_POSITIVE
+  B_NEGITIVE
+  O_POSITIVE
+  O_NEGITIVE
+  AB_POSITIVE
+  AB_NEGITIVE
+  ABO_POSITIVE
+  ABO_NEGITIVE
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  role      Role   
+  password  String
+  createdAt DateTime @default(now())
+  isActive  Boolean  @default(true)
+  loggedIn  Boolean @default(true)
+  
+  patientRecords   PatientRecord[] @relation("PatientRecordsAsPatient")
+  doctorRecords    PatientRecord[] @relation("PatientRecordsAsDoctor")
+}
+
+model PatientRecord {
+  id           String   @id @default(uuid())
+  patientId    String
+  doctorId     String
+  name         String   
+  age          Int
+  gender       Gender
+  bloodGroup   BloodGroup
+  ward         String
+  diagnosis    String
+  status       PatientStatus  
+  admittedAt   DateTime @default(now())
+  dischargedAt DateTime? 
+
+  patient User @relation("PatientRecordsAsPatient", fields: [patientId], references: [id])
+  doctor  User @relation("PatientRecordsAsDoctor", fields: [doctorId], references: [id])
+}

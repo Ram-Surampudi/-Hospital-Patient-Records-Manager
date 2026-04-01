@@ -1,0 +1,6 @@
+npm install prisma@6 @prisma/client@6 @prisma/adapter-mariadb mysql2
+npm install express dotenv nodemon
+
+npx prisma init --datasource-provider mysql
+npx prisma migrate dev --name add_user_tables
+npx prisma generate
