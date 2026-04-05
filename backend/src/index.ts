@@ -1,8 +1,9 @@
 import dotenv from 'dotenv';
-import app from './app.js'
-import config from './utils/config.js';
-import connectDB from './db/connect.js';
-import { runNow } from './script.js';
+import app from './app'
+import config from './utils/config';
+import connectDB from './db/connect';
+import { runNow } from './script';
+import { ApiError } from './utils/api-error';
 
 
 dotenv.config();
@@ -16,7 +17,7 @@ connectDB()
             runNow();
             });
         })
-    .catch((err)=>{
+    .catch((err:Error|ApiError)=>{
         console.log(err);
         process.exit(1);
         })

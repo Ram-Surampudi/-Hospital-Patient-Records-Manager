@@ -1,3 +1,7 @@
+npm install express
+npm install typescript ts-node-dev @types/node @types/express --save-dev
+npx tsc --init
+
 npm install prisma@6 @prisma/client@6 @prisma/adapter-mariadb mysql2
 npm install express dotenv nodemon
 

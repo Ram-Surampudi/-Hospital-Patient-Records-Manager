@@ -1,7 +1,8 @@
-import config from '../utils/config.js'
-import { ApiError } from '../utils/api-error.js';
+import config from '../utils/config'
+import { ApiError } from '../utils/api-error';
+import { NextFunction, Request, Response } from 'express';
 
-function getErrorMessage(error) {
+function getErrorMessage(error:Error | Object | string| undefined | null) {
   if (error instanceof Error) {
     return error.message;
   }
@@ -14,7 +15,7 @@ function getErrorMessage(error) {
   return "An error occurred";
 }
 
-export default function errorHandler(error , req, res , next){
+export default function errorHandler(error:ApiError|Error , req : Request, res:Response , next:NextFunction){
 
     if (res.headersSent || config.debug) {
         next(error);
@@ -24,8 +25,8 @@ export default function errorHandler(error , req, res , next){
     if (error instanceof ApiError) {
         res.status(error.statusCode).json({
         error: {
-            message: error.message,
-            code: error.code,
+            message: error?.message,
+            code: error?.statusCode,
         },
         });
         return;
