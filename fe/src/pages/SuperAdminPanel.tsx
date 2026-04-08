@@ -189,6 +189,7 @@ const SuperAdminPanel: React.FC = () => {
     }
   };
 
+
   const handleDeleteHospital = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this hospital? This will also delete all associated data.')) {
       try {

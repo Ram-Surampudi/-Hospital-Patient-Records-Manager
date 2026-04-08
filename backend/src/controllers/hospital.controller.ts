@@ -18,7 +18,9 @@ export const hospitalController = {
   async createHospital(req: AuthRequest, res: Response) {
     try {
       const { name, address, phone, email } = req.body;
-      
+      if(req.user.role !== 'superadmin') {
+        return res.status(403).json({ message: 'Forbidden: Insufficient permissions' });
+      }
       const hospital = await prisma.hospital.create({
         data: {
           name,
@@ -39,7 +41,9 @@ export const hospitalController = {
     try {
       const { id } = req.params;
       const data = req.body;
-      
+      if(req.user.role !== 'superadmin') {
+        return res.status(403).json({ message: 'Forbidden: Insufficient permissions' });
+      }
       const hospital = await prisma.hospital.update({
         where: { id },
         data,
@@ -55,6 +59,9 @@ export const hospitalController = {
   async deleteHospital(req: AuthRequest, res: Response) {
     try {
       const { id } = req.params;
+      if(req.user.role !== 'superadmin') {
+        return res.status(403).json({ message: 'Forbidden: Insufficient permissions' });
+      }
       
       await prisma.hospital.delete({
         where: { id },
